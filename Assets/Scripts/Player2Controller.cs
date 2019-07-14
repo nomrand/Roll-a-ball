@@ -26,11 +26,15 @@ public class Player2Controller : MonoBehaviour
         float z = Input.GetAxis("Vertical");
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         Transform transform = GetComponent<Transform>();
+        ParticleSystem footSmoke = GetComponent<ParticleSystem>();
+
         if (x == 0 && z == 0)
         {
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
             rigidbody.angularVelocity = Vector3.zero;
             animator.SetBool("is_walk", false);
+            footSmoke.Stop();
+
         }
         else
         { // Add physical force to theplayer 
@@ -41,7 +45,18 @@ public class Player2Controller : MonoBehaviour
             Quaternion curr_quat = transform.rotation;
             transform.rotation = Quaternion.RotateTowards(curr_quat, dest_quat, turnSpeed);
             animator.SetBool("is_walk", true);
+            if (OnGround)
+            {
+                footSmoke.Play();
+            }
+
         }
+        // when player in air, particle not occur
+        if (!OnGround)
+        {
+            footSmoke.Stop();
+        }
+
         // When input spaceKey, player jump
         if (Input.GetButtonDown("Jump") && OnGround)
         {
