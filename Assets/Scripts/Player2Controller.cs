@@ -10,6 +10,8 @@ public class Player2Controller : MonoBehaviour
     public float jumpPower = 10;
     public bool OnGround { get; set; }
 
+    public Vector3 xyz;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,7 @@ public class Player2Controller : MonoBehaviour
         Transform transform = GetComponent<Transform>();
         ParticleSystem footSmoke = GetComponent<ParticleSystem>();
 
+        xyz = rigidbody.velocity;
         if (x == 0 && z == 0)
         {
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
